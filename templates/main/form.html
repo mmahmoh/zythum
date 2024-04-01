@@ -1,0 +1,39 @@
+{% extends 'main/main-blank.html' %}
+{% load widget_tweaks %}
+{% load partials %}
+
+{% partialdef form-control %}
+  {% include 'main/partials/form-control.html' %}
+{% endpartialdef %}
+
+{% block main %}
+  <form action="" method="post" novalidate>{% csrf_token %}
+
+    <div class="form-text text-danger mb-4">
+      {% for non_field_error in form.non_field_errors %}
+        {{ non_field_error }}
+      {% endfor %}
+    </div>
+
+    {% for hidden_field in form.hidden_fields %}
+      {{ hidden_field }}
+    {% endfor %}
+
+    {% for field in form.visible_fields %}
+      {% if field.label == 'Captcha' %}
+        {{ field }}
+      {% else %}
+        {% if field.field.widget.input_type in form_control %}
+          {% with label=field.label errors=field.errors for=field.id_for_label help=field.help_text %}
+            {% partial form-control %}
+          {% endwith %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  
+  {% block submit %}{% endblock %}
+
+  </form>
+
+
+{% endblock %}

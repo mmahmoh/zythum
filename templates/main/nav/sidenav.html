@@ -1,0 +1,53 @@
+<!-- Sidenav -->
+{% load static %}
+<nav
+    id="sidenav-1"
+    class="sidenav bg-light"
+    data-mdb-hidden="false"
+    data-mdb-accordion="true"
+>
+  <a
+      class="ripple d-flex justify-content-center py-4"
+      href="#!"
+      data-mdb-ripple-color="primary"
+  >
+    <img
+        id="MDB-logo"
+        src="{% static 'main/img/avatar.png' %}"
+        width="40px"
+        alt="MDB Logo"
+        draggable="false"
+    />
+  </a>
+
+  <ul class="sidenav-menu">
+    <li class="sidenav-item">
+      <a class="sidenav-link" href="">
+        <i class="fas fa-chart-area fa-fw me-3"></i><span>Webiste traffic</span></a
+      >
+    </li>
+    <li class="sidenav-item">
+      <a class="sidenav-link"><i class="fas fa-cogs fa-fw me-3"></i><span>Settings</span></a>
+      <ul class="sidenav-collapse">
+        <li class="sidenav-item">
+          <a class="sidenav-link">Profile</a>
+        </li>
+        <li class="sidenav-item">
+          <a class="sidenav-link">Account</a>
+        </li>
+      </ul>
+    </li>
+    <li class="sidenav-item">
+      <a class="sidenav-link"><i class="fas fa-lock fa-fw me-3"></i><span>Password</span></a>
+      <ul class="sidenav-collapse">
+        <li class="sidenav-item">
+          <a class="sidenav-link">Request password</a>
+        </li>
+        <li class="sidenav-item">
+          <a class="sidenav-link">Reset password</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+<!-- Sidenav -->

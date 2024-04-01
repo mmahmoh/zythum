@@ -1,0 +1,21 @@
+{% extends 'main/form.html' %}
+
+{% block main %}
+  <div class="container-fluid">
+    <div class="d-flex justify-content-center align-items-center" style="height: 80vh">
+      <div class="card col-3">
+        <div class="card-body">
+          <div class="card-header"><h3 class="display-6">{{ title }}</h3>
+            <div class="card-subtitle"><h6>Lorem ipsum dolor sit.</h6></div>
+          </div>
+          {{ block.super }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block submit %}
+  <input class="btn btn-primary btn-block" type="submit" value="{{ title }}">
+{% endblock %}

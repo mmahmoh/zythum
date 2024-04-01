@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+  <title>{{ title }}</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="{% static 'main/img/favicon.ico' %}" type="image/x-icon"/>
+  <!-- Font Awesome -->
+  <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <!-- Google Fonts Roboto -->
+  <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+  />
+  <!-- MDB -->
+  <link rel="stylesheet" href="{% static 'main/css/mdb.umd.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'main/css/mdb.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'main/css/plugins/all.min.css' %}"/>
+  <script
+      src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+      integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+      crossorigin="anonymous">
+  </script>
+  {% if user.is_superuser or user.is_staff%}
+    <style>
+        @media (min-width: 1400px) {
+            main,
+            header,
+            footer,
+            #main-navbar {
+                padding-left: 240px;
+            }
+        }
+    </style>
+  {% endif %}
+</head>
+<body>
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-dismissible fade show" role="alert" data-mdb-color="{{ message.tags }}">
+      {{ message }}
+      <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+<!-- Start your project here-->
+{% block header %}
+  {% include 'main/nav/navbar.html' %}
+  {% if user.is_superuser %}
+    {% include 'main/nav/sidenav.html' %}
+  {% endif %}
+{% endblock %}
+
+<main>
+  {% block main %}
+
+  {% endblock %}
+</main>
+<!-- End your project here-->
+
+<!-- MDB -->
+<script type="text/javascript" src="{% static 'main/js/mdb.umd.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main/js/mdb.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main/js/plugins/all.min.js' %}"></script>
+<!-- Custom scripts -->
+<script type="text/javascript"></script>
+{% block javascript %}{% endblock %}
+<!-- Custom scripts -->
+<script type="text/javascript">
+    const sidenav = document.getElementById('sidenav-1');
+    const sidenavInstance = mdb.Sidenav.getInstance(sidenav);
+
+    let innerWidth = null;
+
+    const setMode = (e) => {
+        // Check necessary for Android devices
+        if (window.innerWidth === innerWidth) {
+            return;
+        }
+
+        innerWidth = window.innerWidth;
+
+        if (window.innerWidth < 1400) {
+            sidenavInstance.changeMode('over');
+            sidenavInstance.hide();
+        } else {
+            sidenavInstance.changeMode('side');
+            sidenavInstance.show();
+        }
+    };
+
+    setMode();
+
+    // Event listeners
+    window.addEventListener('resize', setMode);
+</script>
+</body>
+</html>

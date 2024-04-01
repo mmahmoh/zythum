@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+<div class="my-3">
+  <div id="{{ label }}_errors" class="form-text text-danger mb-2">
+    {% for error in errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+  <div class="form-outline" data-mdb-input-init>
+    {{ field|add_class:"form-control" }}
+    <label class="form-label" for="{{ for }}">
+      {{ label }}
+      {% if field.field.required %}
+      <sup><i class="fas fa-asterisk fa-sm text-danger"></i></sup>	
+      {% endif %} 
+    </label>
+  </div>
+  <div id="{{ label }}_help_text" class="form-text">{{ help }}</div>
+</div>
