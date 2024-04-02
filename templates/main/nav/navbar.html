@@ -85,29 +85,34 @@
       <div class="dropdown">
         <a
             data-mdb-dropdown-init
-            class="dropdown-toggle d-flex align-items-center hidden-arrow"
+            class="dropdown-toggle d-flex align-items-center hidden-arrow text-reset"
             href="#"
             id="navbarDropdownMenuAvatar"
             role="button"
             aria-expanded="false"
         >
-          <img
-              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-              class="rounded-circle"
-              height="25"
-              alt="Black and White Portrait of a Man"
-              loading="lazy"
-          />
+{#          <img#}
+{#              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"#}
+{#              class="rounded-circle"#}
+{#              height="25"#}
+{#              alt="Black and White Portrait of a Man"#}
+{#              loading="lazy"#}
+{#          />#}
+          <p class="small">{{ user }}</p>
         </a>
         <ul
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdownMenuAvatar"
         >
+          
           <li>
-            <a class="dropdown-item" href="#">My profile</a>
+            <a class="dropdown-item" href="{% url 'accounts:profile-update' %}">Update Profile</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="{% url 'accounts:password-change' %}">Change Password</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'accounts:profile-delete' %}">Delete Account</a>
           </li>
           <li>
             <form action="{% url 'accounts:logout' %}" method="post">{% csrf_token %}

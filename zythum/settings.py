@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-from django.template.context_processors import static
+# from django.template.context_processors import static
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
 from pathlib import Path

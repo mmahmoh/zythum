@@ -27,7 +27,7 @@
       integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
       crossorigin="anonymous">
   </script>
-  {% if user.is_superuser or user.is_staff%}
+  {% if user.is_superuser or user.is_staff %}
     <style>
         @media (min-width: 1400px) {
             main,
@@ -41,26 +41,37 @@
   {% endif %}
 </head>
 <body>
+
+<!-- Start your project here-->
 {% if messages %}
   {% for message in messages %}
-    <div class="alert alert-dismissible fade show" role="alert" data-mdb-color="{{ message.tags }}">
+    <div id="id_messages" class="alert alert-dismissible fade show small" role="alert"
+         data-mdb-color="{{ message.tags }}"
+         data-mdb-position="top-right"
+         data-mdb-hidden="false"
+         data-mdb-width="50%"
+         data-mdb-autohide="true"
+         data-mdb-delay="5000"
+         data-mdb-stacking="true"
+    >
       {{ message }}
       <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
     </div>
   {% endfor %}
 {% endif %}
-<!-- Start your project here-->
+
 {% block header %}
-  {% include 'main/nav/navbar.html' %}
+  {% if user.is_authenticated %}
+    {% include 'main/nav/navbar.html' %}
+  {% endif %}
   {% if user.is_superuser %}
     {% include 'main/nav/sidenav.html' %}
   {% endif %}
 {% endblock %}
 
-<main>
-  {% block main %}
 
-  {% endblock %}
+<main>
+  {% block main %}{% endblock %}
 </main>
 <!-- End your project here-->
 

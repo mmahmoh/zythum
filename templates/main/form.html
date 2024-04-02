@@ -1,4 +1,4 @@
-{% extends 'main/main-blank.html' %}
+{% extends 'main/main-blank-nav.html' %}
 {% load widget_tweaks %}
 {% load partials %}
 
@@ -23,15 +23,19 @@
       {% if field.label == 'Captcha' %}
         {{ field }}
       {% else %}
-        {% if field.field.widget.input_type in form_control %}
-          {% with label=field.label errors=field.errors for=field.id_for_label help=field.help_text %}
-            {% partial form-control %}
-          {% endwith %}
-        {% endif %}
+
+        {% with 'text email password url number tel textarea' as list %}
+          {% if field.field.widget.input_type in list.split %}
+            {% with label=field.label errors=field.errors for=field.id_for_label help=field.help_text %}
+              {% partial form-control %}
+            {% endwith %}
+          {% endif %}
+        {% endwith %}
+
       {% endif %}
     {% endfor %}
-  
-  {% block submit %}{% endblock %}
+
+    {% block submit %}{% endblock %}
 
   </form>
 

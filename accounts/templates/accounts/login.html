@@ -5,8 +5,8 @@
     <div class="d-flex justify-content-center align-items-center" style="height: 60vh">
       <div class="card col-3">
         <div class="card-body">
-          <div class="card-header"><h3 class="display-6">{{ title }}</h3>
-            <div class="card-subtitle"><h6>Lorem ipsum dolor sit.</h6></div>
+          <div class="card-header"><h1 class="h3 fw-lighter">{{ title }}</h1>
+            <div class="card-subtitle"><h6 class="text-muted fw-medium">Lorem ipsum dolor sit.</h6></div>
           </div>
           {{ block.super }}
         </div>
@@ -23,7 +23,8 @@
       <a class="btn btn-outline-primary btn-block" href="{% url 'accounts:signup' %}">signup</a>
     </div>
     <div class="col">
-      <a class="btn btn-outline-primary btn-block" href="">forgot password?</a>
+      <a class="btn btn-outline-primary btn-block" href="{% url 'accounts:password-reset' %}">forgot password?</a>
     </div>
   </div>
 {% endblock %}
+

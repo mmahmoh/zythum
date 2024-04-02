@@ -1,0 +1,30 @@
+{% extends 'main/form.html' %}
+
+{% block main %}
+  <div class="container-fluid">
+    <div class="d-flex justify-content-center align-items-center" style="height: 80vh">
+      <div class="card col-3">
+        <div class="card-body">
+          <div class="card-header"><h1 class="h3 fw-lighter">{{ title }}</h1>
+            <p class="text-danger small">You are about to delete your account. Your account and data
+            will be deleted, it will be unrecoverable.</p>
+            <p class="small">Thank you for joining in.</p>
+          </div>
+          {{ block.super }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block submit %}
+  <div class="row">
+    <div class="col">
+      <input class="btn btn-danger btn-block" type="submit" value="{{ title }}">
+    </div>
+    <div class="col">
+      <a class="btn btn-primary btn-block" href="{% url 'accounts:profile' %}">Cancel</a>
+    </div>
+  </div>
+{% endblock %}

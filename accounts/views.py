@@ -2,7 +2,10 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import EmailMessage
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordResetView, PasswordResetDoneView,
+    PasswordResetConfirmView, PasswordResetCompleteView, PasswordChangeView
+)
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -10,30 +13,26 @@ from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from django.views.generic import CreateView, TemplateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.utils.translation import gettext_lazy as _
 
-from .forms import LoginForm, SignupForm
+from .forms import (
+    LoginForm, SignupForm, ResetPasswordForm, ChangePasswordForm, ProfileForm
+)
 from .tokens import account_activation_token
 
 
 class LoginFormView(LoginView):
     form_class = LoginForm
     template_name = 'accounts/login.html'
-    extra_context = {
-        'title': 'Log In',
-        'form_control': ['email', 'password', 'tel', 'number', 'text', 'url'],
-    }
+    extra_context = {'title': 'Login'}
 
 
 class SignupFormView(CreateView):
     form_class = SignupForm
     template_name = 'accounts/signup.html'
     success_url = reverse_lazy('accounts:login')
-    extra_context = {
-        'title': 'Sign Up',
-        'form_control': ['email', 'password', 'tel', 'number', 'text', 'url'],
-    }
+    extra_context = {'title': 'Sign Up'}
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -43,7 +42,7 @@ class SignupFormView(CreateView):
         # send account activation email
         mail_subject = 'Activate your account'
         message = render_to_string(
-            'accounts/activation-email.html',
+            'accounts/account-activation-email.html',
             {
                 'user': user,
                 'domain': get_current_site(self.request).domain,
@@ -111,27 +110,64 @@ class ProfileView(LoginRequiredMixin, DetailView):
 class LogoutUserView(LoginRequiredMixin, LogoutView):
     success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/logout.html'
-    exetra_context = {'title': 'Logout'}
+    extra_context = {'title': 'Logout'}
 
 
+class PasswordReset(PasswordResetView):
+    template_name = 'accounts/password-reset.html'
+    form_class = ResetPasswordForm
+    email_template_name = 'accounts/password-reset-email.html'
+    extra_context = {'title': 'Reset Password'}
+    success_url = reverse_lazy('accounts:password-reset-done')
 
 
+class PasswordResetDone(PasswordResetDoneView):
+    template_name = 'accounts/password-reset-done.html'
+    extra_context = {'title': 'Password Reset Request'}
 
 
+class PasswordResetConfirmation(PasswordResetConfirmView):
+    template_name = 'accounts/password-reset-confirmation.html'
+    extra_context = {'title': 'Set New Password'}
+    success_url = reverse_lazy('accounts:password-reset-complete')
 
 
+class PasswordResetComplete(PasswordResetCompleteView):
+    template_name = 'accounts/password-reset-complete.html'
+    extra_context = {'title': 'Password Reset Complete'}
 
 
+class PasswordChange(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'accounts/password-change.html'
+    form_class = ChangePasswordForm
+    extra_context = {'title': 'Change Password'}
+
+    def get_success_url(self):
+        messages.success(self.request, _('Your password has been changed successfully.'))
+        return reverse_lazy('accounts:profile')
 
 
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
+    template_name = 'accounts/account-update.html'
+    form_class = ProfileForm
+    extra_context = {
+        'title': 'Update Profile',
+        'subtitle': 'Change your personal information',
+    }
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        messages.success(self.request, _(f'Dear "{self.request.user}", your profile has been updated'))
+        return reverse_lazy('accounts:profile')
 
 
+class ProfileDelete(LoginRequiredMixin, DeleteView):
+    model = get_user_model()
+    template_name = 'accounts/account-delete.html'
+    success_url = reverse_lazy('accounts:login')
+    extra_context = {'title': 'Delete Account'}
 
-
-
-
-
-
-
-
-
+    def get_object(self, queryset=None):
+        return self.request.user
